@@ -211,7 +211,7 @@ def plot_energy_spectrum(elog, fene, ax, plot_config, tframe, **kwargs):
         linestyle = 'solid'
     fene[fene == 0.0] = np.nan
     label_text = r"t$_{A}$ = "+str(0.1*tframe)
-    ax.loglog(elog, fene, linewidth=1, color=color, label=label_text)
+    ax.loglog(elog, fene, linewidth=1, color=color, linestyle=linestyle, label=label_text)
     ax.set_xlim(plot_config["xlim_e"])
     ax.set_ylim(plot_config["ylim_e"])
     npow = len(plot_config["power_low"])

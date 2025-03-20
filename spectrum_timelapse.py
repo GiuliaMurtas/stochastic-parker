@@ -78,7 +78,7 @@ def extend_mhd_info(mhd_run):
     mhd_info.update(mhd_config_for_sde)
     return mhd_info
     
-mhd_run = "beta_0.5_2"
+mhd_run = "test_1024_2048"
 # The command above looks out for the file athinput.reconnection
 
 # Not only: this folder is the same indicated during the run,
@@ -164,27 +164,33 @@ def plot_global_spectra(sde_run_config):
         flux = dnptl_bins * pbins / debins_kev
         kwargs["plot_power"] = False
         kwargs["color"] = plt.cm.jet((tframe - tmin) / float(tmax - tmin), 1) #jet as original scale #'red'
-        kwargs["label_text"] = r't = '+str(0.1*tframe)+r' $\tau_A$'
-        #kwargs["color"] = plt.cm.jet((tframe - 30) / float(tmax - 30), 1)
+        kwargs["label_text"] = r't = '+str(round(0.1*tframe,2))+r' $\tau_A$'
         plot_energy_spectrum(ebins_kev, flux, ax1, sde_run_config, tframe, **kwargs)
-        #plt.plot(ebins_kev[42:52], flux[42:52],linestyle='dashed',color='blue')
+        #plt.plot(ebins_kev[42:70], flux[42:70],linestyle='dashed',color='red')
+        #plt.plot(ebins_kev[49:62], flux[49:62],linestyle='dashed',color='red')
+        #plt.plot(ebins_kev[65:75], flux[65:75],linestyle='dashed',color='cyan')
         
-        #slopea, intercept, r_value, p_value, std_err = linregress(np.log10(ebins_kev[42:52]),np.log10(flux[42:52]))
-        #print(slopea,std_err)
-        #fe_fake = np.power((ebins_kev/ebins_kev[59]),slopea) * intercept
-        #plt.plot(ebins_kev, fe_fake,linestyle='dashed',linewidth=1,color='black')
+        #slopea, intercepta, r_valuea, p_valuea, std_erra = linregress(np.log10(ebins_kev[42:70]),np.log10(flux[42:70]))
+        #print(slopea,std_erra)
+        #fe_fakea = np.power((ebins_kev/ebins_kev[73]),slopea) * intercepta
+        #plt.plot(ebins_kev[42:70], fe_fakea[42:70],linestyle='dashed',linewidth=1,color='black')
         
-        #for i in range(52,70):
-        #    print(r'Flux ratio:',2.72-fe_fake[i]/flux[i],r'Energy:',ebins_kev[i],i)
-        #plt.plot(ebins_kev[57], flux[57], 'bX')
+        #slopeb, interceptb, r_valueb, p_valueb, std_errb = linregress(np.log10(ebins_kev[65:75]),np.log10(flux[65:75]))
+        #print(slopeb,std_errb)
+        #fe_fakeb = np.power((ebins_kev/ebins_kev[65]),slopeb) * interceptb
+        #plt.plot(ebins_kev[65:75], fe_fakeb[65:75],linestyle='dashed',linewidth=1,color='black')
+        
+        #for i in range(71,80):
+        #    print(r'Flux ratio:',2.72-fe_fakea[i]/flux[i],r'Energy:',ebins_kev[i],i)
+        #plt.plot(ebins_kev[76], flux[76], 'rX')
 
     ax1.tick_params(bottom=True, top=True, left=True, right=True)
     ax1.set_xlabel(r'$\varepsilon$ (keV)', fontsize=10)
     ax1.set_ylabel(r'$J$', fontsize=10)
     ax1.tick_params(which='both',labelsize=8,direction='in')
     ax1.grid(True)
-    ax1.set_xlim([1, 30])
-    ax1.set_ylim([0.00001,10000000])
+    ax1.set_xlim([0.01, 1000])
+    ax1.set_ylim([0.001,100000000])
     ax1.legend(loc="lower left",prop={'size': 6}, borderpad=0.5,labelspacing=0.5,ncol =2)
     
     fdir = "../img/global_spectrum/" + mhd_run + "/"
@@ -198,13 +204,13 @@ with open('spectrum_config.json', 'r') as file_handler:
     config = json.load(file_handler)
     
 # The file 'spectrum_config.json' must be modified before changing sde_run!
-sde_run = "transport_H_0"
+sde_run = "transport_He_1"
 run_name = "athena_reconnection/" + mhd_run + "/" + sde_run
 sde_run_config = config[run_name]
 
 p0 = 0.1
 e0 = sde_run_config["e0"] / (0.5*p0**2)
-sde_run_config["tmin"] = 0
-sde_run_config["tmax"] = 30
+sde_run_config["tmin"] = 30
+sde_run_config["tmax"] = 80
 plot_global_spectra(sde_run_config)
 

@@ -78,7 +78,7 @@ def extend_mhd_info(mhd_run):
     mhd_info.update(mhd_config_for_sde)
     return mhd_info
     
-mhd_run = "beta_0.5_2"
+mhd_run = "test_1024_2048"
 mhd_info = extend_mhd_info(mhd_run)
 
 #########################################
@@ -139,7 +139,7 @@ def spatial_distribution(plot_config, mhd_info, sde_run_config, verbose=True, sh
     ## bx = mhd_info["bcx"]
     ## by = mhd_info["bcy"]
 
-    fig = plt.figure(figsize=[6.5, 3])
+    fig = plt.figure(figsize=[6, 5.5])
     gs = gridspec.GridSpec(1,
                            5,
                            wspace=0,
@@ -213,7 +213,8 @@ def spatial_distribution(plot_config, mhd_info, sde_run_config, verbose=True, sh
             
         fband *= fnorms[iband]
         nyl, nxl = fband.shape
-        fdata_vcut = np.mean(fband[:, nxl // 4 - 3:nxl // 4 + 4], axis=1)
+        #fdata_vcut = np.mean(fband[:, nxl // 4 - 3:nxl // 4 + 4], axis=1)
+        fdata_vcut = np.mean(fband[:, nxl // 2 - 3:nxl // 2 + 4], axis=1)
         fband_ycuts.append(fdata_vcut)
         ax = plt.subplot(gs[0, iband])
         vmin = plot_config['nmin']
@@ -297,7 +298,7 @@ def spatial_distribution(plot_config, mhd_info, sde_run_config, verbose=True, sh
                     linewidth=1,
                     label=label)
     ax.set_ylim([ymin_in, ymax_in])
-    ax.set_xlim([1E0, 2E3])
+    ax.set_xlim([5E-1, 2E3])
     ax.grid(linewidth=0.5)
     ax.set_xlabel('Density', fontsize=10)
     ax.tick_params(axis='y', labelleft=False)
@@ -325,7 +326,7 @@ def spatial_distribution(plot_config, mhd_info, sde_run_config, verbose=True, sh
 with open('spectrum_config.json', 'r') as file_handler:
     config = json.load(file_handler)
     
-sde_run = "transport_H_0"
+sde_run = "transport_H"
 run_name = "athena_reconnection/" + mhd_run + "/" + sde_run
 sde_run_config = config[run_name]
 
@@ -335,7 +336,7 @@ plot_config = {}
 #else:
 plot_config["high_bands"] = [3, 6]
 plot_config["eband"] = 3
-plot_config["tframe"] = 30
+plot_config["tframe"] = 70
 plot_config["nmin"] = 5E-8
 plot_config["nmax"] = 5E2
 
